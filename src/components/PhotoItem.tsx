@@ -1,10 +1,10 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import { useDispatch } from 'react-redux';
-import { likePhoto } from '../store/actions/photosActions';
+import { likePhoto, removeLikedPhoto } from '../redux/photosSlice'; 
 
 interface PhotoItemProps {
-  photo: { id: string, thumbnail: string, title: string };
+  photo: { id: string, thumbnailUrl: string, title: string };
   liked?: boolean;
   onLike?: () => void;
 }
@@ -20,14 +20,22 @@ const PhotoItem: React.FC<PhotoItemProps> = ({ photo, liked = false, onLike }) =
     }
   };
 
+  const handleRemoveLike = () => {
+    dispatch(removeLikedPhoto(photo.id));
+  };
+
   return (
     <View>
       <Image source={{ uri: photo.thumbnailUrl }} style={{ width: 100, height: 100 }} />        
-      {/* the red flag shows that there is an error in the thumbnail as the thumbnail Url does not exist */}
       <Text>{photo.title}</Text>
       <TouchableOpacity onPress={handleLike}>
         <Text>{liked ? 'Liked' : 'Like'}</Text>
       </TouchableOpacity>
+      {liked && (
+        <TouchableOpacity onPress={handleRemoveLike}>
+          <Text>Remove</Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 };

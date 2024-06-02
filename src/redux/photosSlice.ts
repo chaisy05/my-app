@@ -1,5 +1,5 @@
-import { createSlice, PayloadAction, createAsyncThunk, createSelector } from '@reduxjs/toolkit';
-import type { RootState, AppThunk, AppDispatch } from '../store';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { RootState, AppThunk } from '../store';
 
 interface Photo {
   id: string;
@@ -37,12 +37,20 @@ const photosSlice = createSlice({
         }
       }
     },
+    removeLikedPhoto(state, action: PayloadAction<string>) {
+      const photoId = action.payload;
+      state.likedPhotos = state.likedPhotos.filter((p) => p.id !== photoId);
+      const photo = state.photos.find((photo) => photo.id === photoId);
+      if (photo) {
+        photo.liked = false;
+      }
+    },
   },
 });
 
-export const { fetchPhotosSuccess, likePhoto } = photosSlice.actions;
+export const { fetchPhotosSuccess, likePhoto, removeLikedPhoto } = photosSlice.actions;
 
-export const fetchPhotos = (): AppThunk => async (dispatch: AppDispatch) => {
+export const fetchPhotos = (): AppThunk => async (dispatch) => {
   try {
     const response = await fetch('https://jsonplaceholder.typicode.com/photos?albumId=1');
     const data = await response.json();

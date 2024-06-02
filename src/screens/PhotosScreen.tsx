@@ -34,7 +34,7 @@ const PhotosScreen: React.FC = () => {
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <View style={styles.photoContainer}>
-            <Image source={{ uri: item.thumbnailUrl }} style={styles.thumbnail} /> {/* the red flag shows that there is an error in the thumbnail as the thumbnail Url does not exist */}
+            <Image source={{ uri: item.thumbnailUrl }} style={styles.thumbnail} /> 
             <Text>{item.title}</Text>
             <Text onPress={() => handleLike(item.id)}>{item.liked ? 'Unlike' : 'Like'}</Text>
           </View>
